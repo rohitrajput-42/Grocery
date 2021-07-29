@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %} Add Item {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="container mt-5">
+            <h1>Add Grocery List</h1>
+            <form method = 'POST' class = "mt-5 mb-5">
+                {% csrf_token %}
+
+                {{form|crispy}}
+
+                <button type = "submit" class = "btn btn-lg btn-outline-secondary mt-3" style = "float: right"> Add to List </button>
+            </form>
+        </div>
+    {% else %}
+
+    <div class = "container">
+        <div class = "container text-center">
+            <h1 class = "display-3 mt-5"> Hello User, Authenticate yourself first !!!... </h1>
+            
+            <hr class = "mt-5 mb-5" style = "background-color: darkgray; height: 2px; border-radius: 50%; width: 100%">
+
+            <div class = "container row">
+                <div class = "container col-lg-6">
+                    <a href = "{% url 'login' %}"> <button class = "btn shadow btn-lg btn-primary"> Login here <i class="fas fa-sign-out-alt"></i></button> </a>
+                </div>
+                <div class = "container col-lg-6">
+                    <a href = "{% url 'register' %}"> <button class = "btn shadow btn-lg btn-danger"> Register here <i class="fas fa-sign-out-alt"></i></button> </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% endif %}
+
+{% endblock %}

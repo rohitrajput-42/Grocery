@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<div class="container mt-5">
+    <!-- top -->
+    <div class="row">
+        <div class="col-lg-8">
+            <h1>Grocery List</h1>
+        </div>
+        <div class="col-lg-4 float-right">
+
+            <form method="get">
+                
+                {{myFilter.form|crispy}}
+                 
+                <button type = "submit" class = "btn btn-md btn-outline-danger ml-3" style = "width: 150px;"> Filter </button>
+
+            </form>
+
+            <small style = "color: rgb(142, 108, 108)">*Date must be in format of -(MM/DD/YYYY) </small>
+
+        </div>
+    </div>
+    <!-- // top -->
+
+    <!-- Grocery Cards -->
+    <div class="row mt-4"> 
+        <!--- -->
+
+        <!-- Loop This -->
+        {% for product in products %}
+        <div class="col-lg-4">
+            <div class="card shadow rounded mt-2 mb-5">
+                <div class="card-body">
+                  <h5 class="card-title">{{product.name}}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{product.quantity}} {{product.unit}}</h6>
+                  
+                  {% if product.status == 'Bought' %}
+                    <p class="text-success">{{product.status}}</p>
+                    {% elif product.status == 'Left' %}
+                    <p class="text-warning">{{product.status}}</p>
+                    {% elif product.status == 'Not-Available' %}
+                    <p class="text-danger">{{product.status}}</p>
+                  {% endif %}
+
+                   <small> <u>Order placed on</u>: <b>{{product.date_created}}</b></small>
+
+
+                  <div class = "container mt-2 row">
+                      <div class = "col-lg-6 mt-2 mb-3">
+                          <a href = "updateitem/{{product.id}}"><button class = "btn btn-sm btn-primary"> Update <i class="fas fa-edit"></i> </button></a>
+                      </div>
+                      <div class = "col-lg-6 mt-2 mb-3">
+                        <a href = "deleteitem/{{product.id}}"><button class = "btn btn-sm btn-danger"> Delete <i class="fas fa-trash"></i> </button></a>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- // Loop -->
+       
+
+    </div>
+</div>
+
+{% else %}
+
+    <div class = "container">
+        <div class = "container text-center">
+            <h1 class = "display-3 mt-5"> Hello User, Authenticate yourself first !!!... </h1>
+            
+            <hr class = "mt-5 mb-5" style = "background-color: darkgray; height: 2px; border-radius: 50%; width: 100%">
+
+            <div class = "container row">
+                <div class = "container col-lg-6">
+                    <a href = "{% url 'login' %}"> <button class = "btn shadow btn-lg btn-primary"> Login here <i class="fas fa-sign-out-alt"></i></button> </a>
+                </div>
+                <div class = "container col-lg-6">
+                    <a href = "{% url 'register' %}"> <button class = "btn shadow btn-lg btn-danger"> Register here <i class="fas fa-sign-out-alt"></i></button> </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}

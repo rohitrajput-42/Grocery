@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+
+<div class="container mt-5">
+    <!-- top -->
+    <div class="row">
+        <div class="container text-center mb-4">
+            <h1>Your Grocery List</h1>
+        </div>
+    </div>
+    <!-- // top -->
+
+    
+    <!-- Grocery Cards -->
+    <div class="caontainer">
+        
+        <table class="table table-bordered shadow">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">S.No.</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Status</th>
+                <th scope="col">Ordered on</th>
+                <th scope="col">Updated on</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{product.name}}</td>
+                <td>{{product.quantity}}  {{product.unit}}</td>
+                <td>{{product.status}}</td>
+                <td>{{product.date_created}}</td>
+                <td>{{product.updated}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+        <div class = "container text-center mt-5 mb-5">
+            <a href = "/">
+                <button class = "btn btn-lg btn-dark"> Go back <i class="fas fa-sign-out-alt"></i> </button>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% else %}
+
+    <div class = "container">
+        <div class = "container text-center">
+            <h1 class = "display-3 mt-5"> Hello User, Authenticate yourself first !!!... </h1>
+            
+            <hr class = "mt-5 mb-5" style = "background-color: darkgray; height: 2px; border-radius: 50%; width: 100%">
+
+            <div class = "container row">
+                <div class = "container col-lg-6">
+                    <a href = "{% url 'login' %}"> <button class = "btn shadow btn-lg btn-primary"> Login here <i class="fas fa-sign-out-alt"></i></button> </a>
+                </div>
+                <div class = "container col-lg-6">
+                    <a href = "{% url 'register' %}"> <button class = "btn shadow btn-lg btn-danger"> Register here <i class="fas fa-sign-out-alt"></i></button> </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}
